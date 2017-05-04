@@ -11,6 +11,7 @@ import org.bouncycastle.crypto.macs.HMac
 import org.bouncycastle.crypto.params.{ECDomainParameters, ECPrivateKeyParameters, ECPublicKeyParameters, KeyParameter}
 import org.bouncycastle.crypto.signers.{ECDSASigner, HMacDSAKCalculator}
 import org.bouncycastle.math.ec.ECPoint
+import com.hashengineering.crypto.Groestl
 
 
 object Crypto {
@@ -214,11 +215,20 @@ object Crypto {
     out
   }
 
+  def hash2(digest: Digest)(input: Seq[Byte]): BinaryData = {
+    digest.update(input.toArray, 0, input.length)
+    val out = new Array[Byte](digest.getDigestSize)
+    digest.doFinal(out, 0)
+    out
+  }
+
   def sha1 = hash(new SHA1Digest) _
 
   def sha256 = hash(new SHA256Digest) _
 
   def ripemd160 = hash(new RIPEMD160Digest) _
+
+  def groestl = hash2(new Groestl) _
 
   /**
     * 160 bits bitcoin hash, used mostly for address encoding
@@ -237,6 +247,19 @@ object Crypto {
     * @return the 256 bits BTC hash of input
     */
   def hash256(input: Seq[Byte]) = sha256(sha256(input))
+
+  /**
+    * 256 bits groestl hash
+    * hash256(input) = groestl(groestl(input))
+    *
+    * @param input array of byte
+    * @return the 256 bits BTC hash of input
+    */
+  def groestl256(input: Seq[Byte]):BinaryData = {
+    var out = new Array[Byte](32)
+    (Groestl.digest(input.toArray)).copyToArray(out)//groestl(input)
+    out
+  }
 
   /**
     * An ECDSA signature is a (r, s) pair. Bitcoin uses DER encoded signatures
