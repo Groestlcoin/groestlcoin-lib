@@ -13,23 +13,9 @@ public class Groestl implements Digest {
 
 
     private static boolean native_library_loaded = false;
-    private static final MessageDigest digestSHA256;
     private static final Groestl512 digestGroestl = new Groestl512();
 
-    public static byte[] sha256_digest(byte[] input, int offset, int length) {
-        synchronized (digestSHA256) {
-            digestSHA256.reset();
-            digestSHA256.update(input, offset, length);
-            return digestSHA256.digest();
-        }
-    }
     static {
-
-            try {
-                digestSHA256 = MessageDigest.getInstance("SHA-256");
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);  // Can't happen.
-            }
 
         try {
             System.loadLibrary("groestld");
@@ -140,7 +126,7 @@ public class Groestl implements Digest {
 
     @Override
     public int getDigestSize() {
-        return digestGroestl.getDigestLength();
+        return 32;
     }
 
     @Override
