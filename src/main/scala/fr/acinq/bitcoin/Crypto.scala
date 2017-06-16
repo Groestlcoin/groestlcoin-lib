@@ -215,11 +215,12 @@ object Crypto {
     out
   }
 
-  def hash2(digest: Digest)(input: Seq[Byte]): BinaryData = {
-    digest.update(input.toArray, 0, input.length)
+  def hash2(digest: Groestl)(input: Seq[Byte]): BinaryData = {
+    groestl256(input)
+    /*digest.update(input.toArray, 0, input.length)
     val out = new Array[Byte](digest.getDigestSize)
     digest.doFinal(out, 0)
-    out
+    out*/
   }
 
   def sha1 = hash(new SHA1Digest) _

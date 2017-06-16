@@ -300,7 +300,7 @@ object BlockHeader extends BtcMessage[BlockHeader] {
 case class BlockHeader(version: Long, hashPreviousBlock: BinaryData, hashMerkleRoot: BinaryData, time: Long, bits: Long, nonce: Long) {
   require(hashPreviousBlock.length == 32, "hashPreviousBlock must be 32 bytes")
   require(hashMerkleRoot.length == 32, "hashMerkleRoot must be 32 bytes")
-  lazy val hash: BinaryData = Crypto.hash256(BlockHeader.write(this))
+  lazy val hash: BinaryData = Crypto.groestl(BlockHeader.write(this))
 }
 
 /**
@@ -335,19 +335,19 @@ object Block extends BtcMessage[Block] {
 
   // genesis blocks
   val LivenetGenesisBlock = {
-    val script = OP_PUSHDATA(writeUInt32(486604799L)) :: OP_PUSHDATA(BinaryData("04")) :: OP_PUSHDATA("The Times 03/Jan/2009 Chancellor on brink of second bailout for banks".getBytes("UTF-8")) :: Nil
+    val script = OP_PUSHDATA(writeUInt32(486604799L)) :: OP_PUSHDATA(BinaryData("04")) :: OP_PUSHDATA("Pressure must be put on Vladimir Putin over Crimea".getBytes("UTF-8")) :: Nil
     val scriptPubKey = OP_PUSHDATA("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") :: OP_CHECKSIG :: Nil
     Block(
-      BlockHeader(version = 1, hashPreviousBlock = Hash.Zeroes, hashMerkleRoot = "3ba3edfd7a7b12b27ac72c3e67768f617fc81bc3888a51323a9fb8aa4b1e5e4a", time = 1231006505, bits = 0x1d00ffff, nonce = 2083236893),
+      BlockHeader(version = 112, hashPreviousBlock = Hash.Zeroes, hashMerkleRoot = "bb2866aaca46c4428ad08b57bc9d1493abaf64724b6c3052a7c8f958df68e93c", time = 1395342829, bits = 0x1e0fffff, nonce = 220035),
       List(
         Transaction(version = 1,
           txIn = List(TxIn.coinbase(script)),
-          txOut = List(TxOut(amount = 50 btc, publicKeyScript = scriptPubKey)),
+          txOut = List(TxOut(amount = 0 btc, publicKeyScript = scriptPubKey)),
           lockTime = 0))
     )
   }
 
-  val TestnetGenesisBlock = LivenetGenesisBlock.copy(header = LivenetGenesisBlock.header.copy(time = 1296688602, nonce = 414098458))
+  val TestnetGenesisBlock = LivenetGenesisBlock.copy(header = LivenetGenesisBlock.header.copy(time = 1440000002, nonce = 6556309, version = 3, bits = 0x1e00FFFF))
 
   val RegtestGenesisBlock = LivenetGenesisBlock.copy(header = LivenetGenesisBlock.header.copy(bits = 0x207fffffL, nonce = 2, time = 1296688602))
 
@@ -380,7 +380,7 @@ case class Block(header: BlockHeader, tx: Seq[Transaction]) {
 }
 
 object Message extends BtcMessage[Message] {
-  val MagicMain = 0xD9B4BEF9L
+  val MagicMain = 0xD4B4BEF9L
   val MagicTestNet = 0xDAB5BFFAL
   val MagicTestnet3 = 0x0709110BL
   val MagicNamecoin = 0xFEB4BEF9L
@@ -397,7 +397,7 @@ object Message extends BtcMessage[Message] {
     val checksum = uint32(in)
     val payload = new Array[Byte](length.toInt)
     in.read(payload)
-    require(checksum == uint32(new ByteArrayInputStream(Crypto.hash256(payload).take(4).toArray)), "invalid checksum")
+    require(checksum == uint32(new ByteArrayInputStream(Crypto.groestl256(payload).take(4).toArray)), "invalid checksum")
     Message(magic, command, payload)
   }
 
@@ -407,7 +407,7 @@ object Message extends BtcMessage[Message] {
     input.command.getBytes("ISO-8859-1").copyToArray(buffer)
     writeBytes(buffer, out)
     writeUInt32(input.payload.length, out)
-    val checksum = Crypto.hash256(input.payload).take(4).toArray
+    val checksum = Crypto.groestl(input.payload).take(4).toArray
     writeBytes(checksum, out)
     writeBytes(input.payload, out)
   }
