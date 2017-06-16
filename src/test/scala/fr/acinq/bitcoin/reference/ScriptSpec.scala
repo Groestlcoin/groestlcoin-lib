@@ -75,7 +75,7 @@ object ScriptSpec {
     lockTime = 0)
 
   def spendingTx(scriptSig: Array[Byte], tx: Transaction) = Transaction(version = 1,
-    txIn = TxIn(OutPoint(Crypto.hash256(Transaction.write(tx)), 0), scriptSig, 0xffffffff) :: Nil,
+    txIn = TxIn(OutPoint(Crypto.sha256(Transaction.write(tx)), 0), scriptSig, 0xffffffff) :: Nil,
     txOut = TxOut(tx.txOut(0).amount, Array.empty[Byte]) :: Nil,
     lockTime = 0)
 

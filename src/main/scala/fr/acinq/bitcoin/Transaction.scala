@@ -294,7 +294,7 @@ object Transaction extends BtcMessage[Transaction] {
       Hash.One
     } else {
       val txCopy = prepareForSigning(tx, inputIndex, previousOutputScript, sighashType)
-      Crypto.hash256(Transaction.write(txCopy, Transaction.SERIALIZE_TRANSACTION_NO_WITNESS) ++ writeUInt32(sighashType))
+      Crypto.sha256(Transaction.write(txCopy, Transaction.SERIALIZE_TRANSACTION_NO_WITNESS) ++ writeUInt32(sighashType))
     }
   }
 
@@ -324,17 +324,17 @@ object Transaction extends BtcMessage[Transaction] {
     signatureVersion match {
       case SigVersion.SIGVERSION_WITNESS_V0 =>
         val hashPrevOut: BinaryData = if (!isAnyoneCanPay(sighashType)) {
-          Crypto.hash256(tx.txIn.map(_.outPoint).map(OutPoint.write(_, Protocol.PROTOCOL_VERSION)).flatten)
+          Crypto.sha256(tx.txIn.map(_.outPoint).map(OutPoint.write(_, Protocol.PROTOCOL_VERSION)).flatten)
         } else Hash.Zeroes
 
         val hashSequence: BinaryData = if (!isAnyoneCanPay(sighashType) && !isHashSingle(sighashType) && !isHashNone(sighashType)) {
-          Crypto.hash256(tx.txIn.map(_.sequence).map(s => Protocol.writeUInt32(s.toInt)).flatten)
+          Crypto.sha256(tx.txIn.map(_.sequence).map(s => Protocol.writeUInt32(s.toInt)).flatten)
         } else Hash.Zeroes
 
         val hashOutputs: BinaryData = if (!isHashSingle(sighashType) && !isHashNone(sighashType)) {
-          Crypto.hash256(tx.txOut.map(TxOut.write(_, Protocol.PROTOCOL_VERSION)).flatten)
+          Crypto.sha256(tx.txOut.map(TxOut.write(_, Protocol.PROTOCOL_VERSION)).flatten)
         } else if (isHashSingle(sighashType) && inputIndex < tx.txOut.size) {
-          Crypto.hash256(TxOut.write(tx.txOut(inputIndex), Protocol.PROTOCOL_VERSION))
+          Crypto.sha256(TxOut.write(tx.txOut(inputIndex), Protocol.PROTOCOL_VERSION))
         } else Hash.Zeroes
 
         val out = new ByteArrayOutputStream()
@@ -349,7 +349,7 @@ object Transaction extends BtcMessage[Transaction] {
         Protocol.writeUInt32(tx.lockTime.toInt, out)
         Protocol.writeUInt32(sighashType, out)
         val preimage: BinaryData = out.toByteArray
-        Crypto.hash256(preimage)
+        Crypto.sha256(preimage)
       case _ =>
         hashForSigning(tx, inputIndex, previousOutputScript, sighashType)
     }
@@ -493,7 +493,7 @@ case class Transaction(version: Long, txIn: Seq[TxIn], txOut: Seq[TxOut], lockTi
 
   import Transaction._
 
-  lazy val hash: BinaryData = Crypto.hash256(Transaction.write(this, SERIALIZE_TRANSACTION_NO_WITNESS))
+  lazy val hash: BinaryData = Crypto.sha256(Transaction.write(this, SERIALIZE_TRANSACTION_NO_WITNESS))
   lazy val txid: BinaryData = hash.reverse
 
   /**

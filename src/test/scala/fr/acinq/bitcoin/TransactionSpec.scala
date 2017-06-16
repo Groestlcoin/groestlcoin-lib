@@ -33,7 +33,7 @@ class TransactionSpec extends FlatSpec with Matchers {
     writeUInt32(1, out)
     // hash code type
     val serialized = out.toByteArray
-    val hashed = Crypto.hash256(serialized)
+    val hashed = Crypto.sha256(serialized)
     val pkey_encoded = Base58.decode("92f9274aR3s6zd1vuAgxquv4KP5S5thJadF3k54NHuTV4fXL1vW")
     val pkey = PrivateKey(pkey_encoded.slice(1, pkey_encoded.size - 4))
     val (r, s) = Crypto.sign(hashed, pkey)
@@ -98,7 +98,7 @@ class TransactionSpec extends FlatSpec with Matchers {
     val serializedTx1AndHashType = Transaction.write(tx1) ++ writeUInt32(1)
 
     // step #3: hash the result
-    val hashed = Crypto.hash256(serializedTx1AndHashType)
+    val hashed = Crypto.sha256(serializedTx1AndHashType)
 
     // step #4: sign transaction hash
     val (r, s) = Crypto.sign(hashed, privateKey)
