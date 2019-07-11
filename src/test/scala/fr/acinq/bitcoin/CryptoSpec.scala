@@ -15,8 +15,8 @@ class CryptoSpec extends FlatSpec {
 
   "Crypto" should "import private keys" in {
     // exported from the bitcoin client running in testnet mode
-    val address = "mhW1BQDyhbTsnHEuB1n7yuj9V81TbeRfTY"
-    val privateKey = "cRp4uUnreGMZN8vB7nQFX6XWMHU5Lc73HMAhmcDEwHfbgRS66Cqp"
+    val address = "mhW1BQDyhbTsnHEuB1n7yuj9V81TbuKWRh"
+    val privateKey = "cRp4uUnreGMZN8vB7nQFX6XWMHU5Lc73HMAhmcDEwHfbgRVNfABP"
 
     val (version, data) = Base58Check.decode(privateKey)
     val priv = PrivateKey(data)
