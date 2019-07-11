@@ -31,7 +31,7 @@ class CryptoSpec extends FlatSpec {
     assert(publicKey.toUncompressedBin === hex"0450863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b23522cd470243453a299fa9e77237716103abc11a1df38855ed6f2ee187e9c582ba6")
 
     val address = Base58Check.encode(Prefix.PubkeyAddress, Crypto.hash160(publicKey.toUncompressedBin))
-    assert(address === "16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM")
+    assert(address === "FVGCPF4WzDZ9V1gWiHUPnKTcRLg5WopWUk")
   }
 
   it should "generate public keys from private keys 2" in {
@@ -40,7 +40,7 @@ class CryptoSpec extends FlatSpec {
     assert(publicKey.toUncompressedBin === hex"04D7E9DD0C618C65DC2E3972E2AA406CCD34E5E77895C96DC48AF0CB16A1D9B8CE0C0A3E2F4CD494FF54FBE4F5A95B410C0BF022EB2B6F23AE39F40DB79FAA6827")
 
     val address = Base58Check.encode(Prefix.PubkeyAddress, Crypto.hash160(publicKey.toUncompressedBin))
-    assert(address === "19FgFQGZy47NcGTJ4hfNdGMwS8EATqoa1X")
+    assert(address === "FdRPhJzwXYnv3sUQwoer5nAG6HW83PQKAp")
   }
 
   it should "validate public key at instantiation" in {
@@ -66,7 +66,7 @@ class CryptoSpec extends FlatSpec {
   }
 
   it should "sign and verify signatures" in {
-    val privateKey = PrivateKey.fromBase58("cRp4uUnreGMZN8vB7nQFX6XWMHU5Lc73HMAhmcDEwHfbgRS66Cqp", Base58.Prefix.SecretKeyTestnet)._1
+    val privateKey = PrivateKey.fromBase58("cRp4uUnreGMZN8vB7nQFX6XWMHU5Lc73HMAhmcDEwHfbgRVNfABP", Base58.Prefix.SecretKeyTestnet)._1
     val publicKey = privateKey.publicKey
     val data = Crypto.sha256(ByteVector("this is a test".getBytes("UTF-8")))
     val sig = Crypto.sign(data, privateKey)

@@ -51,7 +51,7 @@ object KeyEncodingSpec {
 
   def isValidBech32(input: String): Boolean = Try {
     Bech32.decodeWitnessAddress(input) match {
-      case (hrp, 0, bin) if (hrp == "bc" || hrp == "tb" || hrp == "bcrt") && (bin.length == 20 || bin.length == 32) => true
+      case (hrp, 0, bin) if (hrp == "grs" || hrp == "tgrs" || hrp == "bcrt") && (bin.length == 20 || bin.length == 32) => true
       case _ => false
     }
   } getOrElse (false)
@@ -82,7 +82,7 @@ object KeyEncodingSpec {
             val OP_HASH160 :: OP_PUSHDATA(hash, _) :: OP_EQUAL :: Nil = Script.parse(bin)
             assert(data == hash)
           case _ => encoded.substring(0, 2) match {
-            case "bc" | "tb" =>
+            case "grs" | "tgrs" =>
               val (_, tag, program) = Bech32.decodeWitnessAddress(encoded)
               val op :: OP_PUSHDATA(hash, _) :: Nil = Script.parse(bin)
               assert(Script.simpleValue(op) == tag)

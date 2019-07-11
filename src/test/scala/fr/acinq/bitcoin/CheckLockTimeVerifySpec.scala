@@ -41,7 +41,7 @@ class CheckLockTimeVerifySpec extends FlatSpec {
 
 
     // now we try to redeem this tx
-    val to = "mi1cMMSL9BZwTQZYpweE1nTmwRxScirPp3"
+    val to = "mi1cMMSL9BZwTQZYpweE1nTmwRxScjxYvP"
     val amount = 10000
 
     // we can redeem this tx with a single signature from Alice, if the lock time of the redeeming tx is >= 100

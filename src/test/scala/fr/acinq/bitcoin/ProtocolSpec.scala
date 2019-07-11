@@ -38,14 +38,14 @@ class ProtocolSpec extends FlatSpec {
     val tx = Transaction.read("01000000010c432f4fb3e871a8bda638350b3d5c698cf431db8d6031b53e3fb5159e59d4a90000000000ffffffff0100f2052a010000001976a9143744841e13b90b4aca16fe793a7f88da3a23cc7188ac00000000")
     val script = Script.parse(tx.txOut(0).publicKeyScript)
     val publicKeyHash = Script.publicKeyHash(script)
-    assert(Base58Check.encode(Base58.Prefix.PubkeyAddressTestnet, publicKeyHash) === "mkZBYBiq6DNoQEKakpMJegyDbw2YiNQnHT")
+    assert(Base58Check.encode(Base58.Prefix.PubkeyAddressTestnet, publicKeyHash) === "mkZBYBiq6DNoQEKakpMJegyDbw2Yg6raz1")
   }
   it should "generate genesis block" in {
     assert(Block.write(Block.LivenetGenesisBlock) === hex"700000000000000000000000000000000000000000000000000000000000000000000000bb2866aaca46c4428ad08b57bc9d1493abaf64724b6c3052a7c8f958df68e93ced3d2b53ffff0f1e835b03000101000000010000000000000000000000000000000000000000000000000000000000000000ffffffff3a04ffff001d0104325072657373757265206d75737420626520707574206f6e20566c6164696d697220507574696e206f766572204372696d6561ffffffff010000000000000000434104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac00000000")
     assert(Block.LivenetGenesisBlock.blockId === ByteVector32(hex"00000ac5927c594d49cc0bdb81759d0da8297eb614683d3acb62f0703b639023"))
     assert(Block.TestnetGenesisBlock.blockId === ByteVector32(hex"000000ffbb50fc9898cdd36ec163e6ba23230164c0052a28876255b7dcf2cd36"))
-    assert(Block.RegtestGenesisBlock.blockId === ByteVector32(hex"0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206"))
-    assert(Block.SegnetGenesisBlock.blockId === ByteVector32(hex"18fb5ff510c09532033d2137a6914010509ee6258275a4b7e1b7b24b1d2191b2"))
+    assert(Block.RegtestGenesisBlock.blockId === ByteVector32(hex"8a57614cd95175e9d341f8dbdceaf7906826097ee7f65c4bbaff0b90be8cc100"))
+    assert(Block.SegnetGenesisBlock.blockId === ByteVector32(hex"340888f05476919489f5ca34847f7fad2b98c1bf6cbbc7524e7a137d3a76fdbc"))
   }
   it should "decode proof-of-work difficulty" in {
     assert(decodeCompact(0) === (BigInteger.ZERO, false, false))
@@ -84,7 +84,7 @@ class ProtocolSpec extends FlatSpec {
     assert(Version.write(version) === hex"721101000100000000000000c420c45300000000010000000000000000000000000000000000ffff55eb1103479d010000000000000000000000000000000000ffff6d18bab9479d91a26eae39be1743102f5361746f7368693a302e392e39392f231a040001")
 
     val message = Message(magic = 0x0709110bL, command = "version", payload = Version.write(version))
-    assert(Message.write(message) === hex"0b11090776657273696f6e0000000000660000008c48bb56721101000100000000000000c420c45300000000010000000000000000000000000000000000ffff55eb1103479d010000000000000000000000000000000000ffff6d18bab9479d91a26eae39be1743102f5361746f7368693a302e392e39392f231a040001")
+    assert(Message.write(message) === hex"0x0b11090776657273696f6e0000000000660000005b334aad721101000100000000000000c420c45300000000010000000000000000000000000000000000ffff55eb1103479d010000000000000000000000000000000000ffff6d18bab9479d91a26eae39be1743102f5361746f7368693a302e392e39392f231a040001")
 
     val message1 = Message.read(Message.write(message).toArray)
     assert(message1.command === "version")
