@@ -252,6 +252,7 @@ object Crypto {
 
   def groestl = hash2(new Groestl) _
 
+  def groestl32 = (x: ByteVector) => ByteVector32(groestl256(x))
   /**
     * 160 bits bitcoin hash, used mostly for address encoding
     * hash160(input) = RIPEMD160(SHA256(input))
