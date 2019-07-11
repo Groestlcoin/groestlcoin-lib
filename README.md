@@ -16,11 +16,11 @@ This is a simple scala library which implements most of the bitcoin protocol:
 * pay to script tx / multisig tx
 * BIP 32 (deterministic wallets)
 * BIP 39 (mnemonic code for generating deterministic keys)
-* BIP 70
+* BIP 173 (Base32 address format for native v0-16 witness outputs)
 
 ## Objectives
 
-Our goal is not to re-implement a full Bitcoin node but to build a library that can be used to build applications that rely on bitcoind to interface with the Bitcoin network (to retrieve and index transactions and blocks, for example...). We use it very often to build quick prototypes and test new ideas. Besides, some parts of the protocole are fairly simple and "safe" to re-implement (BIP32/BIP39 for example), especially for indexing/analysis purposes. And, of course, we use it for our own work on Lightning.
+Our goal is not to re-implement a full Bitcoin node but to build a library that can be used to build applications that rely on bitcoind to interface with the Bitcoin network (to retrieve and index transactions and blocks, for example...). We use it very often to build quick prototypes and test new ideas. Besides, some parts of the protocole are fairly simple and "safe" to re-implement (BIP32/BIP39 for example), especially for indexing/analysis purposes. And, of course, we use it for our own work on Lightning (see https://github.com/ACINQ/eclair).
 
 ## Status
 - [X] Message parsing (blocks, transactions, inv, ...)
@@ -47,16 +47,32 @@ Our goal is not to re-implement a full Bitcoin node but to build a library that 
   <dependency>
     <groupId>fr.acinq</groupId>
     <artifactId>bitcoin-lib_2.11</artifactId>
-    <version>0.9.10</version>
+    <version>0.11</version>
   </dependency>
 </dependencies>
 ```
 
-The latest snapshot (development) version is 0.9.11-SNAPSHOT, the latest released version is 0.9.10
+The latest snapshot (development) version is 0.12-SNAPSHOT, the latest released version is 0.11
 
 ## Segwit support
 
 Bitcoin-lib, starting with version 0.9.7, fully supports segwit (see below for more information) and is on par with the segwit code in Bitcoin Core 0.13.1.
+
+## libscp256k1 support
+
+bitcoin-lib embeds JNI bindings for libsecp256k1, which is must faster than BouncyCastle. It will extract and load native bindings for your operating system
+in a temporary directory. If this process fails it will fallback to BouncyCastle.
+
+JNI libraries are included for:
+- Linux 64 bits
+- Windows 64 bits
+- Osx 64 bits
+
+You can use your own library native library by specifying its path with `-Dfr.acinq.secp256k1.lib.path` and optionally its name with `-Dfr.acinq.secp256k1.lib.name` (if unspecified
+bitcoin-lib will use the standard name for your OS i.e. libsecp256k1.so on Linux, secp256k1.dll on Windows, ...)
+
+You can also specify the temporary directory where the library will be extracted with `-Djava.io.tmpdir` or `-Dfr.acinq.secp256k1.tmpdir` (if you want to use a different
+directory from `-Djava.io.tmpdir`).
 
 ## Usage
 

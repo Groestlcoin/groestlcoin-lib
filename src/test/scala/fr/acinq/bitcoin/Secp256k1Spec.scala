@@ -1,10 +1,9 @@
 package fr.acinq.bitcoin
 
-import fr.acinq.bitcoin.Crypto.{PrivateKey, Scalar}
+import fr.acinq.bitcoin.Crypto.PrivateKey
 import org.bitcoin.{NativeSecp256k1, Secp256k1Context}
-import org.junit.runner.RunWith
 import org.scalatest.FunSuite
-import org.scalatest.junit.JUnitRunner
+import scodec.bits.ByteVector
 
 import scala.util.Random
 
@@ -17,7 +16,6 @@ import scala.util.Random
   * $./autogen.sh && ./configure --enable-experimental --enable-module_ecdh --enable-jni && make clean && make && make check
   * libsecp256k1.so should be in the .libs/ directory
   */
-@RunWith(classOf[JUnitRunner])
 class Secp256k1Spec extends FunSuite {
   test("deterministic signatures") {
     assume(Secp256k1Context.isEnabled)
@@ -26,8 +24,8 @@ class Secp256k1Spec extends FunSuite {
     for (i <- 0 until 1000) {
       Random.nextBytes(priv)
       Random.nextBytes(data)
-      val sig1: BinaryData = Crypto.encodeSignature(Crypto.sign(data, PrivateKey(priv, true)))
-      val sig2: BinaryData = NativeSecp256k1.sign(data, priv)
+      val sig1: ByteVector = Crypto.sign(ByteVector.view(data), PrivateKey(ByteVector.view(priv)))
+      val sig2: ByteVector = ByteVector.view(NativeSecp256k1.signCompact(data, priv))
       assert(sig1 == sig2)
     }
   }
@@ -38,8 +36,8 @@ class Secp256k1Spec extends FunSuite {
     for (i <- 0 until 1000) {
       Random.nextBytes(priv1)
       Random.nextBytes(priv2)
-      val secret1 = Crypto.ecdh(Scalar(priv1), Scalar(priv2).toPoint)
-      val secret2: BinaryData = NativeSecp256k1.createECDHSecret(priv1, NativeSecp256k1.computePubkey(priv2))
+      val secret1: ByteVector = Crypto.ecdh(PrivateKey(ByteVector.view(priv1)), PrivateKey(ByteVector.view(priv2)).publicKey)
+      val secret2: ByteVector = ByteVector.view(NativeSecp256k1.createECDHSecret(priv1, NativeSecp256k1.computePubkey(priv2)))
       assert(secret1 == secret2)
     }
   }

@@ -2,12 +2,9 @@ package fr.acinq.bitcoin
 
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 
-import org.junit.runner.RunWith
+import fr.acinq.bitcoin.Protocol._
 import org.scalatest.FlatSpec
-import org.scalatest.junit.JUnitRunner
-import Protocol._
 
-@RunWith(classOf[JUnitRunner])
 class ToolsSpec extends FlatSpec {
   "Tools" should "read/write uint8" in {
     Seq(0, 15, 155, 0xee, 0xff).map(value => {

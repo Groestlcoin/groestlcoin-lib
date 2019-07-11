@@ -1,7 +1,7 @@
 package com.hashengineering.crypto;
 
 import fr.cryptohash.Groestl512;
-import org.bouncycastle.crypto.Digest;
+import org.spongycastle.crypto.Digest;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

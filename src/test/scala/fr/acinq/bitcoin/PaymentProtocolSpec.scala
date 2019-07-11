@@ -7,24 +7,25 @@ import java.security.spec.PKCS8EncodedKeySpec
 
 import com.google.protobuf.ByteString
 import org.bitcoin.protocols.payments.Protos.{Output, PaymentDetails, PaymentRequest}
-import org.bouncycastle.util.io.pem.PemReader
-import org.junit.runner.RunWith
-import org.scalatest.FlatSpec
-import org.scalatest.junit.JUnitRunner
+import org.scalatest.{FlatSpec, Ignore}
+import org.spongycastle.util.io.pem.PemReader
 
 import scala.compat.Platform
 
-@RunWith(classOf[JUnitRunner])
+@Ignore
 class PaymentProtocolSpec extends FlatSpec {
   val keystore = KeyStore.getInstance("JKS")
   keystore.load(classOf[PaymentProtocolSpec].getResourceAsStream("/cacerts"), null)
   val aliases = keystore.aliases()
 
   "Payment protocol" should "verify payment requests" in {
-    val stream = classOf[PaymentProtocolSpec].getResourceAsStream("/r1411736682.bitcoinpaymentrequest")
+    // to generate a test payment request I used the bitpay demo: go to https://bitpay.com/demos,
+    // generate a payment, copy the payment uri and download the payment request with
+    // wget --header="Accept: application/bitcoin-paymentrequest" https://bitpay.com/i/XXXXXXXXXX
+    val stream = classOf[PaymentProtocolSpec].getResourceAsStream("/paymentrequest.bin")
     val request = PaymentRequest.parseFrom(stream)
     val (name, publicKey, trustAnchor) = PaymentProtocol.verifySignature(request, keystore)
-    assert(name === "www.bitcoincore.org")
+    assert(name === "bitpay.com")
 
     // check that we get an exception if we attempt to modify payment details
     val details = PaymentDetails.parseFrom(request.getSerializedPaymentDetails)
@@ -33,6 +34,7 @@ class PaymentProtocolSpec extends FlatSpec {
       PaymentProtocol.verifySignature(request1, keystore)
     }
   }
+
   it should "sign payment requests" in {
     val factory = CertificateFactory.getInstance("X.509")
     val cacert = factory.generateCertificate(classOf[PaymentProtocolSpec].getResourceAsStream("/cacert.pem")).asInstanceOf[X509Certificate]
