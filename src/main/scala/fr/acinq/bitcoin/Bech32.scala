@@ -162,7 +162,7 @@ object Bech32 {
   def decodeWitnessAddress(address: String): (String, Byte, ByteVector) = {
     if (address.indexWhere(_.isLower) != -1 && address.indexWhere(_.isUpper) != -1) throw new IllegalArgumentException("input mixes lowercase and uppercase characters")
     val (hrp, data) = decode(address)
-    require(hrp == "grs" || hrp == "tgrs" || hrp == "bcrt", s"invalid HRP $hrp")
+    require(hrp == "grs" || hrp == "tgrs" || hrp == "grsrt", s"invalid HRP $hrp")
     val version = data(0)
     require(version >= 0 && version <= 16, "invalid segwit version")
     val bin = five2eight(data.drop(1))

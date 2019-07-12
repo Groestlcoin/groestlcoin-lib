@@ -51,7 +51,7 @@ object KeyEncodingSpec {
 
   def isValidBech32(input: String): Boolean = Try {
     Bech32.decodeWitnessAddress(input) match {
-      case (hrp, 0, bin) if (hrp == "grs" || hrp == "tgrs" || hrp == "bcrt") && (bin.length == 20 || bin.length == 32) => true
+      case (hrp, 0, bin) if (hrp == "grs" || hrp == "tgrs" || hrp == "grsrt") && (bin.length == 20 || bin.length == 32) => true
       case _ => false
     }
   } getOrElse (false)

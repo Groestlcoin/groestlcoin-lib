@@ -168,7 +168,7 @@ package object bitcoin {
     val hrp = chainHash match {
       case Block.LivenetGenesisBlock.hash => "grs"
       case Block.TestnetGenesisBlock.hash => "tgrs"
-      case Block.RegtestGenesisBlock.hash => "bcrt"
+      case Block.RegtestGenesisBlock.hash => "grsrt"
       case _ => throw new IllegalArgumentException("Unknown chain hash: " + chainHash)
     }
     Bech32.encodeWitnessAddress(hrp, 0, hash)
