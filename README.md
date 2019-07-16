@@ -45,7 +45,7 @@ Our goal is not to re-implement a full Bitcoin node but to build a library that 
 
 <dependencies>
   <dependency>
-    <groupId>fr.acinq</groupId>
+    <groupId>org.groestlcoin</groupId>
     <artifactId>bitcoin-lib_2.11</artifactId>
     <version>0.11</version>
   </dependency>
