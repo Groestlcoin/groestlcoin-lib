@@ -454,7 +454,7 @@ case class Transaction(version: Long, txIn: Seq[TxIn], txOut: Seq[TxOut], lockTi
   lazy val txid: ByteVector32 = hash.reverse
   // witness transaction hash that includes witness data. used to compute the witness commitment included in the coinbase
   // transaction of segwit blocks
-  lazy val whash: ByteVector32 = Crypto.hash256(Transaction.write(this))
+  lazy val whash: ByteVector32 = Crypto.sha256(Transaction.write(this))
   lazy val wtxid: ByteVector32 = whash.reverse
   lazy val bin: ByteVector = Transaction.write(this)
 

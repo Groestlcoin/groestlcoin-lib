@@ -185,7 +185,7 @@ object Block extends BtcSerializer[Block] {
     (witnessReservedValue(coinbase), witnessCommitment(coinbase)) match {
       case (Some(nonce), Some(commitment)) =>
         val rootHash = MerkleTree.computeRoot(ByteVector32.Zeroes +: block.tx.tail.map(tx => tx.whash))
-        val commitmentHash = Crypto.hash256(rootHash ++ nonce)
+        val commitmentHash = Crypto.sha256(rootHash ++ nonce)
         commitment == commitmentHash
       case _ if block.tx.exists(_.hasWitness) => false // block has segwit transactions but no witness commitment
       case _ => true
