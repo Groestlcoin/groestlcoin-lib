@@ -45,22 +45,22 @@ Our goal is not to re-implement a full Bitcoin node but to build a library that 
 
 <dependencies>
   <dependency>
-    <groupId>org.groestlcoin</groupId>
-    <artifactId>bitcoin-lib_2.11</artifactId>
-    <version>0.11</version>
+    <groupId>com.github.groestlcoin</groupId>
+    <artifactId>groestlcoin-lib_2.11</artifactId>
+    <version>0.14</version>
   </dependency>
 </dependencies>
 ```
 
-The latest snapshot (development) version is 0.12-SNAPSHOT, the latest released version is 0.11
+The latest snapshot (development) version is 0.14-SNAPSHOT, the latest released version is 0.14
 
 ## Segwit support
 
-Bitcoin-lib, starting with version 0.9.7, fully supports segwit (see below for more information) and is on par with the segwit code in Bitcoin Core 0.13.1.
+Groestlcoin-lib, starting with version 0.14, fully supports segwit (see below for more information) and is on par with the segwit code in Bitcoin Core 0.13.1.
 
 ## libscp256k1 support
 
-bitcoin-lib embeds JNI bindings for libsecp256k1, which is must faster than BouncyCastle. It will extract and load native bindings for your operating system
+groestlcoin-lib embeds JNI bindings for libsecp256k1, which is must faster than BouncyCastle. It will extract and load native bindings for your operating system
 in a temporary directory. If this process fails it will fallback to BouncyCastle.
 
 JNI libraries are included for:
