@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.groestlcoin</groupId>
+    <groupId>com.github.groestlcoin</groupId>
     <artifactId>groestlcoin-lib_2.11</artifactId>
     <packaging>jar</packaging>
     <version>0.14-SNAPSHOT</version>
@@ -24,17 +24,19 @@
 
     <scm>
         <connection>scm:git:git@github.com:Groestlcoin/groestlcoin-lib.git</connection>
-        <developerConnection>scm:git:git@github.com:Groestlcoin/groestlcoin-lib.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:Groestlcoin/groestlcoin-lib_2.11.git</developerConnection>
         <url>git@github.com:Groestlcoin/groestlcoin-lib.git</url>
         <tag>HEAD</tag>
     </scm>
 
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/Groestlcoin/groestlcoin-lib/issues</url>
+    </issueManagement>
+
     <developers>
         <developer>
-            <id>sstone</id>
-        </developer>
-        <developer>
-            <id>pm47</id>
+            <id>hashengineering</id>
         </developer>
     </developers>
 
@@ -43,6 +45,10 @@
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <repository>
+          <id>ossrh</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
 
     <build>
@@ -170,6 +176,13 @@
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                <configuration>
+                    <updateReleaseInfo>true</updateReleaseInfo>
                 </configuration>
             </plugin>
         </plugins>
