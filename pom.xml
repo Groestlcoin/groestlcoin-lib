@@ -56,11 +56,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>3.8.0</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
-                    <!--release>7</release-->
+                    <release>7</release>
                 </configuration>
                 <executions>
                     <execution>
@@ -86,6 +86,7 @@
                         <arg>-Xmax-classfile-name</arg>
                         <arg>140</arg>
                         <arg>-nobootcp</arg>
+                        <arg>-target:jvm-1.7</arg>
                     </args>
                     <scalaCompatVersion>${scala.version.short}</scalaCompatVersion>
                 </configuration>
@@ -114,7 +115,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -206,14 +207,9 @@
             <version>1.58.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>2.5.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.scodec</groupId>
             <artifactId>scodec-bits_${scala.version.short}</artifactId>
-            <version>1.1.9</version>
+            <version>1.1.12</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -241,7 +237,7 @@
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_${scala.version.short}</artifactId>
-            <version>3.0.5</version>
+            <version>3.0.8</version>
             <scope>test</scope>
         </dependency>
         <dependency>
