@@ -3,7 +3,7 @@
     <groupId>com.github.groestlcoin</groupId>
     <artifactId>groestlcoin-lib_2.11</artifactId>
     <packaging>jar</packaging>
-    <version>0.14</version>
+    <version>0.15</version>
     <description>Simple Scala Groestlcoin library</description>
     <url>https://github.com/Groestlcoin/groestlcoin-lib</url>
     <name>groestlcoin-lib</name>
@@ -60,7 +60,6 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
-                    <release>7</release>
                 </configuration>
                 <executions>
                     <execution>
