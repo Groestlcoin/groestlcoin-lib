@@ -47,12 +47,12 @@ Our goal is not to re-implement a full Bitcoin node but to build a library that 
   <dependency>
     <groupId>com.github.groestlcoin</groupId>
     <artifactId>groestlcoin-lib_2.11</artifactId>
-    <version>0.14</version>
+    <version>0.16</version>
   </dependency>
 </dependencies>
 ```
 
-The latest snapshot (development) version is 0.14-SNAPSHOT, the latest released version is 0.14
+The latest snapshot (development) version is 0.17-SNAPSHOT, the latest released version is 0.14
 
 ## Segwit support
 

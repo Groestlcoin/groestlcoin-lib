@@ -3,7 +3,7 @@
     <groupId>com.github.groestlcoin</groupId>
     <artifactId>groestlcoin-lib_2.11</artifactId>
     <packaging>jar</packaging>
-    <version>0.15</version>
+    <version>0.16</version>
     <description>Simple Scala Groestlcoin library</description>
     <url>https://github.com/Groestlcoin/groestlcoin-lib</url>
     <name>groestlcoin-lib</name>
@@ -26,7 +26,7 @@
         <connection>scm:git:git@github.com:Groestlcoin/groestlcoin-lib.git</connection>
         <developerConnection>scm:git:git@github.com:Groestlcoin/groestlcoin-lib_2.11.git</developerConnection>
         <url>git@github.com:Groestlcoin/groestlcoin-lib.git</url>
-        <tag>HEAD</tag>
+        <tag>v0.16</tag>
     </scm>
 
     <issueManagement>
@@ -73,7 +73,7 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
-                <version>3.4.2</version>
+                <version>4.3.0</version>
                 <configuration>
                     <args>
                         <arg>-deprecation</arg>
@@ -198,7 +198,7 @@
         <dependency>
             <groupId>fr.acinq.bitcoin</groupId>
             <artifactId>secp256k1-jni</artifactId>
-            <version>1.2</version>
+            <version>1.3</version>
         </dependency>
         <dependency>
             <groupId>com.madgag.spongycastle</groupId>
