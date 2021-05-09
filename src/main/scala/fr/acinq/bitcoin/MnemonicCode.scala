@@ -1,8 +1,8 @@
 package fr.acinq.bitcoin
 
-import org.spongycastle.crypto.digests.SHA512Digest
-import org.spongycastle.crypto.generators.PKCS5S2ParametersGenerator
-import org.spongycastle.crypto.params.KeyParameter
+import org.bouncycastle.crypto.digests.SHA512Digest
+import org.bouncycastle.crypto.generators.PKCS5S2ParametersGenerator
+import org.bouncycastle.crypto.params.KeyParameter
 import scodec.bits.ByteVector
 
 import scala.annotation.tailrec
@@ -68,7 +68,7 @@ object MnemonicCode {
     require(check == checksumbits, "invalid checksum")
   }
 
-  def validate(mnemonics: String): Unit = validate(mnemonics.split(" "))
+  def validate(mnemonics: String): Unit = validate(mnemonics.split(" ").toSeq)
 
   /**
     * BIP39 seed derivation
@@ -84,5 +84,5 @@ object MnemonicCode {
     ByteVector.view(keyParams.getKey)
   }
 
-  def toSeed(mnemonics: String, passphrase: String): ByteVector = toSeed(mnemonics.split(" "), passphrase)
+  def toSeed(mnemonics: String, passphrase: String): ByteVector = toSeed(mnemonics.split(" ").toSeq, passphrase)
 }
