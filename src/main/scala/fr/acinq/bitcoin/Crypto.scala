@@ -249,7 +249,7 @@ object Crypto {
 
   def hash2(digest: Groestl)(input: ByteVector): ByteVector = {
     val out = new Array[Byte](digest.getDigestSize)
-    (Groestl.digest(input.toArray)).copyToArray(out)
+    (digest.digest(input.toArray)).copyToArray(out)
     ByteVector.view(out)
   }
 
@@ -287,11 +287,11 @@ object Crypto {
     * @param input array of byte
     * @return the 256 bits BTC hash of input
     */
-  def groestl256(input: ByteVector):ByteVector = {
+  def groestl256(input: ByteVector):ByteVector = ByteVector32(groestl(input)) /*{
     var out = new Array[Byte](32)
     (Groestl.digest(input.toArray)).copyToArray(out)//groestl(input)
     ByteVector.view(out)
-  }
+  }*/
 
   /**
     * An ECDSA signature is a (r, s) pair. Bitcoin uses DER encoded signatures
